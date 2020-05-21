@@ -76,3 +76,9 @@ def delete_evento(request, id_evento):
     else:
         raise Http404
     return redirect('/')
+
+@login_required(login_url='/agenda/')
+def json_list_evento(request):
+    usuario = request.user
+    evento = Evento.objects.filter(usuario=usuario).values('id', 'titulo')
+    return JsonResponse(list(evento), safe=False)
